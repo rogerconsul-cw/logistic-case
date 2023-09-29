@@ -11,6 +11,24 @@
   </head>
 
   <body>
+    <nav>
+      <ul>
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%= link_to 'Books', books_path %></li>
+        <li><%= link_to 'Authors', authors_path %></li>
+        <li>
+          <%= form_with url: search_path, method: :get, local: true do |form| %>
+            <%= form.text_field :query, placeholder: "Search" %>
+            <%= form.radio_button :type, "book", checked: true %> Book
+            <%= form.radio_button :type, "author" %> Author
+            <%= form.submit "Search" %>
+          <% end %>
+        </li>
+        <li><%= link_to "New book", new_book_path %></li>
+        <li><%= link_to "New author", new_author_path %></li>
+      </ul>
+    </nav>
+  
     <%= yield %>
   </body>
 </html>

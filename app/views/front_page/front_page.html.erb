@@ -1,0 +1,20 @@
+<div class="front-page-container">
+
+  <% if @books.present? %>
+  <h1>Books</h1>
+  <% @books.each do |book| %>
+    <%= link_to book.title, book %>
+  <% end %>
+  <% end %>
+
+  <% if @authors.present? %>
+  <h1>Authors</h1>
+  <% @authors.each do |author| %>
+    <%= link_to author.name, author %>
+  <% end %>
+  <% end %>
+  <h2>Roger Consul</h2>
+  <p>
+    Connect with me on <%= link_to 'LinkedIn', 'https://linkedin.com/in/rogerconsul', target: '_blank' %>.
+  </p>
+</div>
