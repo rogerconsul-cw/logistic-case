@@ -37,6 +37,7 @@
 ## Usage
 
 - 🚀 To start the Rails server, run:
+- ```rails s```
 
 
 - 🌐 Access the application in your web browser at `http://localhost:3000/`.
