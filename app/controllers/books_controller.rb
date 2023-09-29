@@ -19,31 +19,32 @@ class BooksController < ApplicationController
   def edit
   end
 
+  def search
+    @books = Book.where('title LIKE ?', "%#{params[:query]}%")
+  end
   # POST /books or /books.json
-  def create
-    @book = Book.new(book_params)
+  # app/controllers/books_controller.rb
 
-    respond_to do |format|
-      if @book.save
-        format.html { redirect_to book_url(@book), notice: "Book was successfully created." }
-        format.json { render :show, status: :created, location: @book }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
-      end
+  def create
+    author_name = params[:book].delete(:author_name)&.strip
+    author = Author.find_or_create_by!(name: author_name)
+    @book = Book.new(book_params.merge(author_id: author.id))
+
+    if @book.save
+      redirect_to @book, notice: 'Book was successfully created.'
+    else
+      render :new
     end
   end
-
-  # PATCH/PUT /books/1 or /books/1.json
+  
   def update
-    respond_to do |format|
-      if @book.update(book_params)
-        format.html { redirect_to book_url(@book), notice: "Book was successfully updated." }
-        format.json { render :show, status: :ok, location: @book }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
-      end
+    author_name = params[:book].delete(:author_name)&.strip
+    author = Author.find_or_create_by!(name: author_name)
+    
+    if @book.update(book_params.merge(author_id: author.id))
+      redirect_to @book, notice: 'Book was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -58,13 +59,16 @@ class BooksController < ApplicationController
   end
 
   private
+
+  private
+
+    def book_params
+      params.require(:book).permit(:title, :pages, :image_link, :author_id, :year, :author_name)
+    end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_book
       @book = Book.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
-    def book_params
-      params.fetch(:book, {})
-    end
 end
