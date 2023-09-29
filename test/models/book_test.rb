@@ -6,14 +6,22 @@ class BookTest < ActiveSupport::TestCase
   end
 
   test "should be valid with a title, author, and publication_year" do
-    book = Book.new(title: "Sample Title", author: @author, publication_year: 2022)
+    book = Book.new(title: "Sample Title", author: @author, year: 2022)
     assert book.valid?
   end
 
   test "should be invalid without a title" do
-    book = Book.new(title: nil, author: @author, publication_year: 2022)
+    book = Book.new(title: nil, author: @author, year: 2022)
     assert_not book.valid?
   end
 
   test "should be invalid without an author" do
-    book = Book.new(title: "Sample Title", author:
+    book = Book.new(title: "Sample Title", author: nil, year: 2022)
+    assert_not book.valid?
+  end
+
+  test "should be invalid without a publication_year" do
+    book = Book.new(title: "Sample Title", author: @author, year: nil)
+    assert_not book.valid?
+  end
+end
