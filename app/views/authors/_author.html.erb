@@ -1,2 +1,12 @@
 <div id="<%= dom_id author %>">
+  <% if controller.action_name == 'show' %>
+    <h3>Author: <%= author.name %></h3>
+    <ul>
+      <% author.books.each do |book| %>
+        <li><%= link_to book.title, book_path(book) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <h3>Author: <%= link_to author.name, author %></h3>
+  <% end %>
 </div>

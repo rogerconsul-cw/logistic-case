@@ -4,10 +4,12 @@
 
 <div id="authors">
   <% @authors.each do |author| %>
-    <%= render author %>
-    <p>
-      <%= link_to "Show this author", author %>
-    </p>
+    <div class="author-card">
+      <h2><%= author.name %></h2>
+      <p>
+        <%= link_to "Show this author", author %>
+      </p>
+    </div>
   <% end %>
 </div>
 
