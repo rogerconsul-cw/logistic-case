@@ -12,6 +12,31 @@
   <% end %>
 
   <div>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :pages %>
+    <%= form.number_field :pages %>
+  </div>
+
+  <div>
+    <%= form.label :image_link %>
+    <%= form.text_field :image_link %>
+  </div>
+
+  <div>
+    <%= form.label :author_name, "Author" %>
+    <%= form.text_field :author_name %>
+  </div>
+
+  <div>
+    <%= form.label :publication_year %>
+    <%= form.number_field :year %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

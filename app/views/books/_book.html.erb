@@ -1,2 +1,17 @@
 <div id="<%= dom_id book %>">
+  <% if controller.action_name == 'show' %>
+    <%# Larger image and all details for the show page %>
+    <%= image_tag(book.image_link.presence || "https://placehold.co/300x450?text=No+cover", alt: "#{book.title} thumbnail", width: "300", height: "450") %>
+    <h1><%= book.title %></h1>
+    <p>Author: <%= link_to book.author.name, author_path(book.author) %></p>
+    <p>Year: <%= book.year %></p>
+    <p>Pages: <%= book.pages %></p>
+    <%# Add other details here %>
+  <% else %>
+    <%# Smaller image and limited details for index and other pages %>
+    <%= image_tag(book.image_link.presence || "https://placehold.co/100x150?text=No+cover", alt: "#{book.title} thumbnail", width: "100", height: "150") %>
+    <h2><%= book.title %></h2>
+    <p>Author: <%= book.author.name %></p>
+  <% end %>
+  <p><%= link_to "Show this book", book %></p>
 </div>
