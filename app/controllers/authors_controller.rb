@@ -21,39 +21,38 @@ class AuthorsController < ApplicationController
 
   # POST /authors or /authors.json
   def create
-    @author = Author.new(author_params)
-
-    respond_to do |format|
-      if @author.save
-        format.html { redirect_to author_url(@author), notice: "Author was successfully created." }
-        format.json { render :show, status: :created, location: @author }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
-      end
+    @author = Author.new(name: params[:author][:name].strip)
+    
+    if @author.save
+      redirect_to @author, notice: 'Author was successfully created.'
+    else
+      render :new
     end
   end
-
+  
   # PATCH/PUT /authors/1 or /authors/1.json
   def update
-    respond_to do |format|
-      if @author.update(author_params)
-        format.html { redirect_to author_url(@author), notice: "Author was successfully updated." }
-        format.json { render :show, status: :ok, location: @author }
+    new_name = params[:author][:name].strip
+    existing_author = Author.find_by(name: new_name)
+  
+    if existing_author && existing_author.id != @author.id
+      redirect_to @author, notice: 'Author already exists'
+    else
+      if @author.update(name: new_name)
+        redirect_to @author, notice: 'Author was successfully updated.'
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
+        render :edit
       end
     end
   end
 
   # DELETE /authors/1 or /authors/1.json
   def destroy
-    @author.destroy
-
-    respond_to do |format|
-      format.html { redirect_to authors_url, notice: "Author was successfully destroyed." }
-      format.json { head :no_content }
+    if @author.books.exists?
+      redirect_to authors_url, notice: "Author cannot be deleted because they are associated with one or more books. Remove the books first."
+    else
+      @author.destroy
+      redirect_to authors_url, notice: "Author was successfully destroyed."
     end
   end
 
@@ -65,6 +64,6 @@ class AuthorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def author_params
-      params.fetch(:author, {})
+      params.require(:author).permit(:name)
     end
 end
